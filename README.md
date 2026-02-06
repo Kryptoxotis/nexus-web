@@ -4,7 +4,7 @@ Web companion for the [Nexus](https://github.com/Kryptoxotis/nexus) Android app.
 
 ## Live
 
-[https://kryptoxotis-nexus.vercel.app](https://kryptoxotis-nexus.vercel.app)
+[https://kryptoxotis-nexus-web.vercel.app](https://kryptoxotis-nexus-web.vercel.app)
 
 ## Tech Stack
 
