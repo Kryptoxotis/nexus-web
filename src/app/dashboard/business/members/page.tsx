@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import MemberTable from '@/components/MemberTable'
-import type { BusinessMember } from '@/lib/types'
+import type { BusinessPass } from '@/lib/types'
 
 export default function MembersPage() {
   const supabase = createClient()
-  const [members, setMembers] = useState<(BusinessMember & { profile?: { display_name: string | null; email: string | null } })[]>([])
+  const [passes, setPasses] = useState<(BusinessPass & { profile?: { full_name: string | null; email: string | null } })[]>([])
   const [loading, setLoading] = useState(true)
-  const [businessId, setBusinessId] = useState<string | null>(null)
+  const [orgId, setOrgId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchMembers()
@@ -19,42 +19,40 @@ export default function MembersPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    // Get business owned by user
-    const { data: business } = await supabase
-      .from('businesses')
+    const { data: org } = await supabase
+      .from('organizations')
       .select('id')
       .eq('owner_id', user.id)
       .single()
 
-    if (!business) {
+    if (!org) {
       setLoading(false)
       return
     }
 
-    setBusinessId(business.id)
+    setOrgId(org.id)
 
-    // Get members with their profiles
     const { data } = await supabase
-      .from('business_members')
+      .from('business_passes')
       .select(`
         *,
-        profile:profiles!business_members_user_id_fkey(display_name, email)
+        profile:profiles!business_passes_user_id_fkey(full_name, email)
       `)
-      .eq('business_id', business.id)
-      .order('joined_at', { ascending: true })
+      .eq('organization_id', org.id)
+      .order('created_at', { ascending: true })
 
-    setMembers(data || [])
+    setPasses(data || [])
     setLoading(false)
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>
+    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div></div>
   }
 
-  if (!businessId) {
+  if (!orgId) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">You need to create a business first.</p>
+        <p className="text-gray-400">You need to create an organization first.</p>
       </div>
     )
   }
@@ -62,12 +60,12 @@ export default function MembersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Members</h1>
-        <span className="text-sm text-gray-500">{members.length} total</span>
+        <h1 className="text-2xl font-bold text-white">Members</h1>
+        <span className="text-sm text-gray-500">{passes.length} total</span>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200">
-        <MemberTable members={members} />
+      <div className="bg-nexus-surface rounded-xl border border-nexus-border">
+        <MemberTable passes={passes} />
       </div>
     </div>
   )

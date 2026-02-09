@@ -37,29 +37,29 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-nexus-bg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div>
       </div>
     )
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-nexus-bg">
       <div className="max-w-md w-full mx-auto p-8">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-teal rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Nexus</h1>
-          <p className="text-gray-600 mt-2">Your digital access hub</p>
+          <h1 className="text-3xl font-bold text-white">Nexus</h1>
+          <p className="text-gray-400 mt-2">Your digital identity wallet</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-nexus-surface rounded-xl border border-nexus-border p-6">
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors font-medium"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-nexus-border rounded-lg text-gray-200 bg-nexus-surface-light hover:bg-nexus-border transition-colors font-medium"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -72,7 +72,7 @@ export default function Home() {
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Manage your passes from anywhere
+          Manage your Nexus cards from anywhere
         </p>
       </div>
     </main>

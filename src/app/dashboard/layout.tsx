@@ -20,14 +20,14 @@ export default async function DashboardLayout({
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('id', user.id)
     .single<Profile>()
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-nexus-bg">
       <Sidebar profile={profile} />
       <div className="flex-1">
-        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-end">
+        <header className="bg-nexus-surface border-b border-nexus-border px-6 py-3 flex items-center justify-end">
           <AuthButton email={user.email} />
         </header>
         <main className="p-6">

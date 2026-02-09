@@ -11,7 +11,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [displayName, setDisplayName] = useState('')
+  const [fullName, setFullName] = useState('')
 
   useEffect(() => {
     fetchProfile()
@@ -24,12 +24,12 @@ export default function SettingsPage() {
     const { data } = await supabase
       .from('profiles')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .single<Profile>()
 
     if (data) {
       setProfile(data)
-      setDisplayName(data.display_name || '')
+      setFullName(data.full_name || '')
     }
     setLoading(false)
   }
@@ -40,31 +40,25 @@ export default function SettingsPage() {
 
     const { error } = await supabase
       .from('profiles')
-      .update({
-        display_name: displayName,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('user_id', profile.user_id)
+      .update({ full_name: fullName })
+      .eq('id', profile.id)
 
     if (!error) {
-      setProfile({ ...profile, display_name: displayName })
+      setProfile({ ...profile, full_name: fullName })
     }
     setSaving(false)
   }
 
-  const handleSwitchRole = async (role: 'personal' | 'business') => {
+  const handleSwitchAccountType = async (type: Profile['account_type']) => {
     if (!profile) return
 
     const { error } = await supabase
       .from('profiles')
-      .update({
-        current_role: role,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('user_id', profile.user_id)
+      .update({ account_type: type })
+      .eq('id', profile.id)
 
     if (!error) {
-      setProfile({ ...profile, current_role: role })
+      setProfile({ ...profile, account_type: type })
       router.refresh()
     }
   }
@@ -75,34 +69,34 @@ export default function SettingsPage() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>
+    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div></div>
   }
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Settings</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Settings</h1>
 
       {/* Profile Section */}
-      <section className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Profile</h2>
+      <section className="bg-nexus-surface rounded-xl border border-nexus-border p-6 mb-6">
+        <h2 className="text-lg font-semibold text-white mb-4">Profile</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <p className="text-sm text-gray-600">{profile?.email}</p>
+            <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
+            <p className="text-sm text-gray-300">{profile?.email}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+            <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
             <div className="flex gap-2">
               <input
                 type="text"
-                value={displayName}
-                onChange={e => setDisplayName(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={fullName}
+                onChange={e => setFullName(e.target.value)}
+                className="flex-1 px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-sm text-gray-200 focus:ring-2 focus:ring-nexus-orange focus:border-nexus-orange"
               />
               <button
                 onClick={handleUpdateName}
-                disabled={saving || displayName === profile?.display_name}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
+                disabled={saving || fullName === profile?.full_name}
+                className="px-4 py-2 bg-nexus-orange text-white rounded-lg hover:bg-nexus-orange-hover transition-colors text-sm font-medium disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -111,39 +105,39 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      {/* Role Section */}
-      <section className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Type</h2>
+      {/* Account Type Section */}
+      <section className="bg-nexus-surface rounded-xl border border-nexus-border p-6 mb-6">
+        <h2 className="text-lg font-semibold text-white mb-4">Account Type</h2>
         <div className="grid grid-cols-2 gap-4">
           <button
-            onClick={() => handleSwitchRole('personal')}
+            onClick={() => handleSwitchAccountType('individual')}
             className={`p-4 rounded-xl border-2 text-left transition-colors ${
-              profile?.current_role === 'personal'
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-gray-300'
+              profile?.account_type === 'individual'
+                ? 'border-nexus-orange bg-nexus-orange/10'
+                : 'border-nexus-border hover:border-nexus-surface-light'
             }`}
           >
-            <p className="font-semibold text-gray-900">Personal</p>
-            <p className="text-sm text-gray-500 mt-1">Use and manage your own passes</p>
+            <p className="font-semibold text-white">Individual</p>
+            <p className="text-sm text-gray-400 mt-1">Use and manage your own cards</p>
           </button>
           <button
-            onClick={() => handleSwitchRole('business')}
+            onClick={() => handleSwitchAccountType('business')}
             className={`p-4 rounded-xl border-2 text-left transition-colors ${
-              profile?.current_role === 'business'
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-gray-300'
+              profile?.account_type === 'business'
+                ? 'border-nexus-teal bg-nexus-teal/10'
+                : 'border-nexus-border hover:border-nexus-surface-light'
             }`}
           >
-            <p className="font-semibold text-gray-900">Business</p>
-            <p className="text-sm text-gray-500 mt-1">Issue passes for your organization</p>
+            <p className="font-semibold text-white">Business</p>
+            <p className="text-sm text-gray-400 mt-1">Issue passes for your organization</p>
           </button>
         </div>
       </section>
 
       {/* Danger Zone */}
-      <section className="bg-white rounded-xl border border-red-200 p-6">
-        <h2 className="text-lg font-semibold text-red-600 mb-4">Sign Out</h2>
-        <p className="text-sm text-gray-600 mb-4">Sign out from the web dashboard. Your passes will remain on your phone.</p>
+      <section className="bg-nexus-surface rounded-xl border border-red-900/50 p-6">
+        <h2 className="text-lg font-semibold text-red-400 mb-4">Sign Out</h2>
+        <p className="text-sm text-gray-400 mb-4">Sign out from the web dashboard. Your cards will remain on your phone.</p>
         <button
           onClick={handleSignOut}
           className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"

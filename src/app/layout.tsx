@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Nexus - Dashboard',
-  description: 'Manage your Nexus passes and business',
+  description: 'Manage your Nexus cards, passes, and organizations',
 }
 
 export default function RootLayout({

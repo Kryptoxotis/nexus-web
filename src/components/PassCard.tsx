@@ -1,39 +1,62 @@
 'use client'
 
-import type { Pass } from '@/lib/types'
+import type { PersonalCard } from '@/lib/types'
 
-interface PassCardProps {
-  pass: Pass
-  onDelete?: (id: string) => void
+const typeIcons: Record<PersonalCard['card_type'], string> = {
+  link: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101',
+  file: 'M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13',
+  contact: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+  social_media: 'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z',
+  custom: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
 }
 
-export default function PassCard({ pass, onDelete }: PassCardProps) {
+interface PassCardProps {
+  card: PersonalCard
+  onDelete?: (id: string) => void
+  onToggleActive?: (id: string, currentlyActive: boolean) => void
+}
+
+export default function PassCard({ card, onDelete, onToggleActive }: PassCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-sm transition-shadow">
+    <div className={`bg-nexus-surface rounded-xl border ${card.is_active ? 'border-nexus-orange' : 'border-nexus-border'} p-5 hover:border-nexus-surface-light transition-colors`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">{pass.pass_name}</h3>
-          <p className="text-sm text-gray-600 mt-0.5">{pass.organization}</p>
-          <p className="text-xs text-gray-400 mt-1">ID: {pass.pass_id}</p>
-          {pass.link && (
-            <a href={pass.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 block">
-              {pass.link}
-            </a>
-          )}
-          {pass.expiry_date && (
-            <p className="text-xs text-gray-400 mt-1">Expires: {pass.expiry_date}</p>
+          <div className="flex items-center gap-2 mb-2">
+            <svg className={`w-4 h-4 ${card.is_active ? 'text-nexus-orange' : 'text-gray-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={typeIcons[card.card_type]} />
+            </svg>
+            <span className="text-xs text-gray-500 capitalize">{card.card_type.replace('_', ' ')}</span>
+          </div>
+          <h3 className="font-semibold text-white">{card.title}</h3>
+          {card.content && (
+            <p className="text-sm text-gray-400 mt-1 truncate">{card.content}</p>
           )}
         </div>
-        <div className="flex items-center gap-2">
-          {pass.is_active && (
-            <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+        <div className="flex items-center gap-2 ml-2">
+          {card.is_active && (
+            <span className="px-2 py-1 text-xs font-medium rounded-full bg-nexus-orange/20 text-nexus-orange">
               Active
             </span>
           )}
+          {onToggleActive && (
+            <button
+              onClick={() => onToggleActive(card.id, card.is_active)}
+              className={`p-1.5 rounded-lg transition-colors ${
+                card.is_active
+                  ? 'text-nexus-orange hover:bg-nexus-orange/10'
+                  : 'text-gray-500 hover:text-nexus-teal hover:bg-nexus-teal/10'
+              }`}
+              title={card.is_active ? 'Deactivate' : 'Activate for NFC'}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={card.is_active ? 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'} />
+              </svg>
+            </button>
+          )}
           {onDelete && (
             <button
-              onClick={() => onDelete(pass.id)}
-              className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+              onClick={() => onDelete(card.id)}
+              className="p-1.5 text-gray-500 hover:text-red-400 rounded-lg hover:bg-red-400/10 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

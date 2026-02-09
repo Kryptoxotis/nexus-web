@@ -11,11 +11,10 @@ export default async function DashboardHome() {
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('id', user.id)
     .single<Profile>()
 
-  // Redirect based on role
-  if (profile?.current_role === 'business') {
+  if (profile?.account_type === 'business') {
     redirect('/dashboard/business')
   }
 

@@ -2,134 +2,119 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Business } from '@/lib/types'
+import type { Organization } from '@/lib/types'
 
 export default function BusinessPage() {
   const supabase = createClient()
-  const [business, setBusiness] = useState<Business | null>(null)
+  const [org, setOrg] = useState<Organization | null>(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    category: '',
+    type: '',
+    enrollment_mode: 'open' as Organization['enrollment_mode'],
   })
 
   useEffect(() => {
-    fetchBusiness()
+    fetchOrganization()
   }, [])
 
-  const fetchBusiness = async () => {
+  const fetchOrganization = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
     const { data } = await supabase
-      .from('businesses')
+      .from('organizations')
       .select('*')
       .eq('owner_id', user.id)
       .single()
 
     if (data) {
-      setBusiness(data)
+      setOrg(data)
       setFormData({
         name: data.name,
         description: data.description || '',
-        category: data.category || '',
+        type: data.type || '',
+        enrollment_mode: data.enrollment_mode,
       })
     }
     setLoading(false)
   }
 
-  const handleCreateBusiness = async (e: React.FormEvent) => {
+  const handleCreateOrg = async (e: React.FormEvent) => {
     e.preventDefault()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    const { data, error } = await supabase.from('businesses').insert({
+    const { data, error } = await supabase.from('organizations').insert({
       owner_id: user.id,
       name: formData.name,
       description: formData.description || null,
-      category: formData.category || null,
+      type: formData.type || null,
+      enrollment_mode: formData.enrollment_mode,
     }).select().single()
 
     if (!error && data) {
-      // Also add owner as business member
-      await supabase.from('business_members').insert({
-        business_id: data.id,
-        user_id: user.id,
-        role: 'owner',
-        status: 'active',
-      })
-      setBusiness(data)
+      setOrg(data)
     }
   }
 
-  const handleUpdateBusiness = async (e: React.FormEvent) => {
+  const handleUpdateOrg = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!business) return
+    if (!org) return
 
-    const { error } = await supabase.from('businesses')
+    const { error } = await supabase.from('organizations')
       .update({
         name: formData.name,
         description: formData.description || null,
-        category: formData.category || null,
-        updated_at: new Date().toISOString(),
+        type: formData.type || null,
+        enrollment_mode: formData.enrollment_mode,
       })
-      .eq('id', business.id)
+      .eq('id', org.id)
 
     if (!error) {
-      setBusiness({ ...business, ...formData } as Business)
+      setOrg({ ...org, ...formData } as Organization)
       setEditing(false)
     }
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>
+    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div></div>
   }
 
-  if (!business) {
+  const inputClass = "w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-nexus-orange focus:border-nexus-orange"
+
+  if (!org) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Create Your Business</h1>
-        <form onSubmit={handleCreateBusiness} className="bg-white rounded-xl border border-gray-200 p-6 max-w-lg">
+        <h1 className="text-2xl font-bold text-white mb-6">Create Your Organization</h1>
+        <form onSubmit={handleCreateOrg} className="bg-nexus-surface rounded-xl border border-nexus-border p-6 max-w-lg">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Business Name *</label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-                placeholder="e.g., Gold's Gym Downtown"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Organization Name *</label>
+              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="e.g., Gold's Gym Downtown" className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                value={formData.description}
-                onChange={e => setFormData({...formData, description: e.target.value})}
-                placeholder="Tell people about your business"
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} placeholder="Tell people about your organization" rows={3} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <input
-                type="text"
-                value={formData.category}
-                onChange={e => setFormData({...formData, category: e.target.value})}
-                placeholder="e.g., Fitness, Office, Coworking"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Type</label>
+              <input type="text" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} placeholder="e.g., Fitness, Office, Coworking" className={inputClass} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Enrollment Mode</label>
+              <select value={formData.enrollment_mode} onChange={e => setFormData({...formData, enrollment_mode: e.target.value as Organization['enrollment_mode']})} className={inputClass}>
+                <option value="open">Open</option>
+                <option value="pin">PIN Required</option>
+                <option value="invite">Invite Only</option>
+                <option value="closed">Closed</option>
+              </select>
             </div>
           </div>
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-          >
-            Create Business
+          <button type="submit" className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-lg hover:bg-nexus-orange-hover transition-colors text-sm font-medium">
+            Create Organization
           </button>
         </form>
       </div>
@@ -139,75 +124,57 @@ export default function BusinessPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">My Business</h1>
-        <button
-          onClick={() => setEditing(!editing)}
-          className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
+        <h1 className="text-2xl font-bold text-white">My Organization</h1>
+        <button onClick={() => setEditing(!editing)} className="px-4 py-2 text-sm font-medium text-gray-300 border border-nexus-border rounded-lg hover:bg-nexus-surface-light transition-colors">
           {editing ? 'Cancel' : 'Edit'}
         </button>
       </div>
 
       {editing ? (
-        <form onSubmit={handleUpdateBusiness} className="bg-white rounded-xl border border-gray-200 p-6 max-w-lg">
+        <form onSubmit={handleUpdateOrg} className="bg-nexus-surface rounded-xl border border-nexus-border p-6 max-w-lg">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Business Name *</label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Organization Name *</label>
+              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                value={formData.description}
-                onChange={e => setFormData({...formData, description: e.target.value})}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} rows={3} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <input
-                type="text"
-                value={formData.category}
-                onChange={e => setFormData({...formData, category: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label className="block text-sm font-medium text-gray-300 mb-1">Type</label>
+              <input type="text" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className={inputClass} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Enrollment Mode</label>
+              <select value={formData.enrollment_mode} onChange={e => setFormData({...formData, enrollment_mode: e.target.value as Organization['enrollment_mode']})} className={inputClass}>
+                <option value="open">Open</option>
+                <option value="pin">PIN Required</option>
+                <option value="invite">Invite Only</option>
+                <option value="closed">Closed</option>
+              </select>
             </div>
           </div>
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-          >
+          <button type="submit" className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-lg hover:bg-nexus-orange-hover transition-colors text-sm font-medium">
             Save Changes
           </button>
         </form>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-nexus-surface rounded-xl border border-nexus-border p-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
-              <span className="text-2xl font-bold text-blue-600">
-                {business.name.charAt(0).toUpperCase()}
-              </span>
+            <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-teal rounded-xl flex items-center justify-center">
+              <span className="text-2xl font-bold text-white">{org.name.charAt(0).toUpperCase()}</span>
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">{business.name}</h2>
-              {business.description && (
-                <p className="text-gray-600 mt-1">{business.description}</p>
-              )}
-              {business.category && (
-                <span className="inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600">
-                  {business.category}
-                </span>
-              )}
-              <p className="text-xs text-gray-400 mt-3">
-                Created: {new Date(business.created_at).toLocaleDateString()}
-              </p>
+              <h2 className="text-xl font-semibold text-white">{org.name}</h2>
+              {org.description && <p className="text-gray-400 mt-1">{org.description}</p>}
+              <div className="flex gap-2 mt-2">
+                {org.type && (
+                  <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-surface-light text-gray-300">{org.type}</span>
+                )}
+                <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-teal/20 text-nexus-teal capitalize">{org.enrollment_mode}</span>
+              </div>
+              <p className="text-xs text-gray-500 mt-3">Created: {new Date(org.created_at).toLocaleDateString()}</p>
             </div>
           </div>
         </div>
