@@ -63,7 +63,7 @@ export default function LogsPage() {
                   <td className="py-3 px-4">
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                       log.access_granted
-                        ? 'bg-nexus-teal/20 text-nexus-teal'
+                        ? 'bg-nexus-green/20 text-nexus-green'
                         : 'bg-red-500/20 text-red-400'
                     }`}>
                       {log.access_granted ? 'Granted' : 'Denied'}

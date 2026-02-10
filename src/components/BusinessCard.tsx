@@ -11,7 +11,7 @@ export default function BusinessCard({ organization, isOwner }: BusinessCardProp
   return (
     <div className="bg-nexus-surface rounded-xl border border-nexus-border p-5 hover:border-nexus-surface-light transition-colors">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-nexus-orange to-nexus-teal rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 bg-gradient-to-br from-nexus-orange to-nexus-green rounded-xl flex items-center justify-center flex-shrink-0">
           <span className="text-xl font-bold text-white">
             {organization.name.charAt(0).toUpperCase()}
           </span>
@@ -39,7 +39,7 @@ export default function BusinessCard({ organization, isOwner }: BusinessCardProp
                 {organization.type}
               </span>
             )}
-            <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-nexus-teal/20 text-nexus-teal capitalize">
+            <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-nexus-green/20 text-nexus-green capitalize">
               {organization.enrollment_mode}
             </span>
           </div>

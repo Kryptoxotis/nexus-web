@@ -162,7 +162,7 @@ export default function BusinessPage() {
       ) : (
         <div className="bg-nexus-surface rounded-xl border border-nexus-border p-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-teal rounded-xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-green rounded-xl flex items-center justify-center">
               <span className="text-2xl font-bold text-white">{org.name.charAt(0).toUpperCase()}</span>
             </div>
             <div>
@@ -172,7 +172,7 @@ export default function BusinessPage() {
                 {org.type && (
                   <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-surface-light text-gray-300">{org.type}</span>
                 )}
-                <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-teal/20 text-nexus-teal capitalize">{org.enrollment_mode}</span>
+                <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-green/20 text-nexus-green capitalize">{org.enrollment_mode}</span>
               </div>
               <p className="text-xs text-gray-500 mt-3">Created: {new Date(org.created_at).toLocaleDateString()}</p>
             </div>

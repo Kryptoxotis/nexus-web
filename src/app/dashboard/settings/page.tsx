@@ -124,7 +124,7 @@ export default function SettingsPage() {
             onClick={() => handleSwitchAccountType('business')}
             className={`p-4 rounded-xl border-2 text-left transition-colors ${
               profile?.account_type === 'business'
-                ? 'border-nexus-teal bg-nexus-teal/10'
+                ? 'border-nexus-green bg-nexus-green/10'
                 : 'border-nexus-border hover:border-nexus-surface-light'
             }`}
           >

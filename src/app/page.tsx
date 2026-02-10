@@ -47,7 +47,7 @@ export default function Home() {
     <main className="min-h-screen flex flex-col items-center justify-center bg-nexus-bg">
       <div className="max-w-md w-full mx-auto p-8">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-teal rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-green rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>

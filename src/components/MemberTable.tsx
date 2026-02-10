@@ -32,7 +32,7 @@ export default function MemberTable({ passes }: MemberTableProps) {
               </td>
               <td className="py-3 px-4">
                 <span className={`px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
-                  pass.status === 'active' ? 'bg-nexus-teal/20 text-nexus-teal' :
+                  pass.status === 'active' ? 'bg-nexus-green/20 text-nexus-green' :
                   pass.status === 'expired' ? 'bg-yellow-500/20 text-yellow-400' :
                   pass.status === 'revoked' ? 'bg-red-500/20 text-red-400' :
                   'bg-nexus-surface-light text-gray-400'
