@@ -9,11 +9,22 @@ type OrgWithOwner = Organization & { profiles: Pick<Profile, 'email' | 'full_nam
 export default function AdminOrgs() {
   const supabase = createClient()
   const [orgs, setOrgs] = useState<OrgWithOwner[]>([])
+  const [users, setUsers] = useState<Pick<Profile, 'id' | 'email' | 'full_name'>[]>([])
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [showCreate, setShowCreate] = useState(false)
+  const [creating, setCreating] = useState(false)
+  const [form, setForm] = useState({
+    name: '',
+    type: '',
+    description: '',
+    owner_id: '',
+    enrollment_mode: 'open' as 'open' | 'pin' | 'invite' | 'closed',
+  })
 
   useEffect(() => {
     fetchOrgs()
+    fetchUsers()
   }, [])
 
   async function fetchOrgs() {
@@ -26,6 +37,14 @@ export default function AdminOrgs() {
     setLoading(false)
   }
 
+  async function fetchUsers() {
+    const { data } = await supabase
+      .from('profiles')
+      .select('id, email, full_name')
+      .order('full_name')
+    setUsers(data ?? [])
+  }
+
   async function toggleActive(orgId: string, currentlyActive: boolean) {
     setActionLoading(orgId)
     await supabase
@@ -36,9 +55,117 @@ export default function AdminOrgs() {
     fetchOrgs()
   }
 
+  async function deleteOrg(orgId: string, orgName: string) {
+    if (!confirm(`Delete "${orgName}"? This cannot be undone.`)) return
+    setActionLoading(orgId)
+    await supabase.from('organizations').delete().eq('id', orgId)
+    setActionLoading(null)
+    fetchOrgs()
+  }
+
+  async function createOrg(e: React.FormEvent) {
+    e.preventDefault()
+    if (!form.name || !form.owner_id) return
+    setCreating(true)
+    await supabase.from('organizations').insert({
+      name: form.name,
+      type: form.type || null,
+      description: form.description || null,
+      owner_id: form.owner_id,
+      enrollment_mode: form.enrollment_mode,
+      is_active: true,
+    })
+    setCreating(false)
+    setShowCreate(false)
+    setForm({ name: '', type: '', description: '', owner_id: '', enrollment_mode: 'open' })
+    fetchOrgs()
+  }
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Organizations</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-white">Organizations</h1>
+        <button
+          onClick={() => setShowCreate(!showCreate)}
+          className="px-4 py-2 text-sm font-medium bg-nexus-orange hover:bg-nexus-orange/80 text-white rounded-lg transition-colors"
+        >
+          {showCreate ? 'Cancel' : 'Create Organization'}
+        </button>
+      </div>
+
+      {showCreate && (
+        <form onSubmit={createOrg} className="bg-nexus-surface border border-nexus-border rounded-xl p-6 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Name *</label>
+              <input
+                type="text"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                required
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50"
+                placeholder="Organization name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Type</label>
+              <input
+                type="text"
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50"
+                placeholder="e.g. Technology, Food & Beverage"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Owner *</label>
+              <select
+                value={form.owner_id}
+                onChange={(e) => setForm({ ...form, owner_id: e.target.value })}
+                required
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white focus:outline-none focus:border-nexus-orange/50"
+              >
+                <option value="">Select owner...</option>
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.full_name || u.email}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Enrollment Mode</label>
+              <select
+                value={form.enrollment_mode}
+                onChange={(e) => setForm({ ...form, enrollment_mode: e.target.value as typeof form.enrollment_mode })}
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white focus:outline-none focus:border-nexus-orange/50"
+              >
+                <option value="open">Open</option>
+                <option value="pin">PIN</option>
+                <option value="invite">Invite</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Description</label>
+            <textarea
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              rows={2}
+              className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50 resize-none"
+              placeholder="Brief description..."
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={creating || !form.name || !form.owner_id}
+            className="px-4 py-2 text-sm font-medium bg-nexus-green hover:bg-nexus-green-light text-white rounded-lg transition-colors disabled:opacity-50"
+          >
+            {creating ? 'Creating...' : 'Create'}
+          </button>
+        </form>
+      )}
 
       <div className="bg-nexus-surface border border-nexus-border rounded-xl overflow-hidden">
         {loading ? (
@@ -54,14 +181,16 @@ export default function AdminOrgs() {
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Type</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Enrollment</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Status</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Created</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-gray-400">Actions</th>
               </tr>
             </thead>
             <tbody>
               {orgs.map((org) => (
                 <tr key={org.id} className="border-b border-nexus-border last:border-0">
-                  <td className="px-4 py-3 text-sm text-white font-medium">{org.name}</td>
+                  <td className="px-4 py-3">
+                    <p className="text-sm text-white font-medium">{org.name}</p>
+                    {org.description && <p className="text-xs text-gray-500 mt-0.5">{org.description}</p>}
+                  </td>
                   <td className="px-4 py-3">
                     <p className="text-sm text-white">{org.profiles?.full_name || 'Unknown'}</p>
                     <p className="text-xs text-gray-400">{org.profiles?.email}</p>
@@ -81,21 +210,27 @@ export default function AdminOrgs() {
                       {org.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400">
-                    {new Date(org.created_at).toLocaleDateString()}
-                  </td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => toggleActive(org.id, org.is_active)}
-                      disabled={actionLoading === org.id}
-                      className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors disabled:opacity-50 ${
-                        org.is_active
-                          ? 'bg-red-600 hover:bg-red-700 text-white'
-                          : 'bg-green-600 hover:bg-green-700 text-white'
-                      }`}
-                    >
-                      {org.is_active ? 'Deactivate' : 'Activate'}
-                    </button>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={() => toggleActive(org.id, org.is_active)}
+                        disabled={actionLoading === org.id}
+                        className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors disabled:opacity-50 ${
+                          org.is_active
+                            ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                            : 'bg-green-600 hover:bg-green-700 text-white'
+                        }`}
+                      >
+                        {org.is_active ? 'Deactivate' : 'Activate'}
+                      </button>
+                      <button
+                        onClick={() => deleteOrg(org.id, org.name)}
+                        disabled={actionLoading === org.id}
+                        className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

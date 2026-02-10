@@ -37,6 +37,16 @@ export default function AdminUsers() {
     fetchUsers()
   }
 
+  async function changeAccountType(userId: string, newType: 'individual' | 'business') {
+    setActionLoading(userId)
+    await supabase
+      .from('profiles')
+      .update({ account_type: newType })
+      .eq('id', userId)
+    setActionLoading(null)
+    fetchUsers()
+  }
+
   const filtered = users.filter((u) => {
     if (!search) return true
     const q = search.toLowerCase()
@@ -76,50 +86,59 @@ export default function AdminUsers() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((user) => (
-                <tr key={user.id} className="border-b border-nexus-border last:border-0">
-                  <td className="px-4 py-3 text-sm text-white">{user.full_name || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400">{user.email}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
-                      user.account_type === 'admin'
-                        ? 'bg-nexus-orange/20 text-nexus-orange'
-                        : user.account_type === 'business'
-                        ? 'bg-nexus-green/20 text-nexus-green'
-                        : 'bg-nexus-surface-light text-gray-400'
-                    }`}>
-                      {user.account_type}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
-                      user.status === 'active'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-red-500/20 text-red-400'
-                    }`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-400">
-                    {new Date(user.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {user.id !== ADMIN_USER_ID && (
-                      <button
-                        onClick={() => toggleStatus(user.id, user.status)}
-                        disabled={actionLoading === user.id}
-                        className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors disabled:opacity-50 ${
-                          user.status === 'active'
-                            ? 'bg-red-600 hover:bg-red-700 text-white'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
-                        }`}
-                      >
-                        {user.status === 'active' ? 'Suspend' : 'Reactivate'}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((user) => {
+                const isAdmin = user.id === ADMIN_USER_ID
+                return (
+                  <tr key={user.id} className="border-b border-nexus-border last:border-0">
+                    <td className="px-4 py-3 text-sm text-white">{user.full_name || '-'}</td>
+                    <td className="px-4 py-3 text-sm text-gray-400">{user.email}</td>
+                    <td className="px-4 py-3">
+                      {isAdmin ? (
+                        <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-nexus-orange/20 text-nexus-orange">
+                          admin
+                        </span>
+                      ) : (
+                        <select
+                          value={user.account_type}
+                          onChange={(e) => changeAccountType(user.id, e.target.value as 'individual' | 'business')}
+                          disabled={actionLoading === user.id}
+                          className="bg-nexus-surface-light border border-nexus-border text-white text-xs rounded-lg px-2 py-1 focus:outline-none focus:border-nexus-orange/50 disabled:opacity-50"
+                        >
+                          <option value="individual">individual</option>
+                          <option value="business">business</option>
+                        </select>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
+                        user.status === 'active'
+                          ? 'bg-green-500/20 text-green-400'
+                          : 'bg-red-500/20 text-red-400'
+                      }`}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-400">
+                      {new Date(user.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {!isAdmin && (
+                        <button
+                          onClick={() => toggleStatus(user.id, user.status)}
+                          disabled={actionLoading === user.id}
+                          className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors disabled:opacity-50 ${
+                            user.status === 'active'
+                              ? 'bg-red-600 hover:bg-red-700 text-white'
+                              : 'bg-green-600 hover:bg-green-700 text-white'
+                          }`}
+                        >
+                          {user.status === 'active' ? 'Suspend' : 'Reactivate'}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         )}

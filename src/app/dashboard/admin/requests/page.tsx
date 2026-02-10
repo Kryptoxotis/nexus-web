@@ -13,6 +13,7 @@ export default function AdminRequests() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<StatusFilter>('all')
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchRequests()
@@ -20,6 +21,7 @@ export default function AdminRequests() {
 
   async function fetchRequests() {
     setLoading(true)
+    setError(null)
     let query = supabase
       .from('business_requests')
       .select('*, profiles!business_requests_user_id_fkey(email, full_name)')
@@ -29,17 +31,21 @@ export default function AdminRequests() {
       query = query.eq('status', filter)
     }
 
-    const { data } = await query
+    const { data, error: fetchError } = await query
+    if (fetchError) {
+      setError(fetchError.message)
+    }
     setRequests((data as RequestWithProfile[]) ?? [])
     setLoading(false)
   }
 
   async function handleAction(requestId: string, userId: string, action: 'approved' | 'rejected') {
     setActionLoading(requestId)
+    setError(null)
 
     const { data: { user } } = await supabase.auth.getUser()
 
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from('business_requests')
       .update({
         status: action,
@@ -48,13 +54,38 @@ export default function AdminRequests() {
       })
       .eq('id', requestId)
 
-    if (!error && action === 'approved') {
-      await supabase
+    if (updateError) {
+      setError(`Failed to ${action === 'approved' ? 'approve' : 'reject'}: ${updateError.message}`)
+      setActionLoading(null)
+      return
+    }
+
+    if (action === 'approved') {
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({ account_type: 'business' })
         .eq('id', userId)
+
+      if (profileError) {
+        setError(`Request approved but failed to upgrade account: ${profileError.message}`)
+      }
     }
 
+    setActionLoading(null)
+    fetchRequests()
+  }
+
+  async function resetRequest(requestId: string) {
+    setActionLoading(requestId)
+    setError(null)
+    const { error: resetError } = await supabase
+      .from('business_requests')
+      .update({ status: 'pending', reviewed_by: null, reviewed_at: null })
+      .eq('id', requestId)
+
+    if (resetError) {
+      setError(`Failed to reset: ${resetError.message}`)
+    }
     setActionLoading(null)
     fetchRequests()
   }
@@ -69,6 +100,12 @@ export default function AdminRequests() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-white">Business Requests</h1>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
 
       <div className="flex gap-2">
         {filters.map((f) => (
@@ -98,6 +135,7 @@ export default function AdminRequests() {
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Requester</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Business Name</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Type</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Message</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Status</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Date</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-gray-400">Actions</th>
@@ -112,6 +150,7 @@ export default function AdminRequests() {
                   </td>
                   <td className="px-4 py-3 text-sm text-white">{req.business_name}</td>
                   <td className="px-4 py-3 text-sm text-gray-400">{req.business_type || '-'}</td>
+                  <td className="px-4 py-3 text-sm text-gray-400 max-w-xs truncate">{req.message || '-'}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
                       req.status === 'pending'
@@ -127,7 +166,7 @@ export default function AdminRequests() {
                     {new Date(req.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    {req.status === 'pending' && (
+                    {req.status === 'pending' ? (
                       <div className="flex gap-2 justify-end">
                         <button
                           onClick={() => handleAction(req.id, req.user_id, 'approved')}
@@ -144,6 +183,14 @@ export default function AdminRequests() {
                           Reject
                         </button>
                       </div>
+                    ) : (
+                      <button
+                        onClick={() => resetRequest(req.id)}
+                        disabled={actionLoading === req.id}
+                        className="px-3 py-1 text-xs font-medium bg-nexus-surface-light hover:bg-nexus-border text-gray-400 hover:text-white rounded-lg transition-colors disabled:opacity-50"
+                      >
+                        Reset to Pending
+                      </button>
                     )}
                   </td>
                 </tr>
