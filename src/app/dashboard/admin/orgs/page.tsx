@@ -14,6 +14,8 @@ export default function AdminOrgs() {
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [showCreate, setShowCreate] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: '',
     type: '',
@@ -27,12 +29,19 @@ export default function AdminOrgs() {
     fetchUsers()
   }, [])
 
+  function flash(msg: string, type: 'error' | 'success') {
+    if (type === 'error') { setError(msg); setSuccess(null) }
+    else { setSuccess(msg); setError(null) }
+    setTimeout(() => { setError(null); setSuccess(null) }, 5000)
+  }
+
   async function fetchOrgs() {
     setLoading(true)
-    const { data } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('organizations')
       .select('*, profiles!organizations_owner_id_fkey(email, full_name)')
       .order('created_at', { ascending: false })
+    if (fetchError) flash(fetchError.message, 'error')
     setOrgs((data as OrgWithOwner[]) ?? [])
     setLoading(false)
   }
@@ -47,10 +56,12 @@ export default function AdminOrgs() {
 
   async function toggleActive(orgId: string, currentlyActive: boolean) {
     setActionLoading(orgId)
-    await supabase
+    const { error } = await supabase
       .from('organizations')
       .update({ is_active: !currentlyActive })
       .eq('id', orgId)
+    if (error) flash(`Failed to toggle: ${error.message}`, 'error')
+    else flash(`Organization ${currentlyActive ? 'deactivated' : 'activated'}`, 'success')
     setActionLoading(null)
     fetchOrgs()
   }
@@ -58,7 +69,9 @@ export default function AdminOrgs() {
   async function deleteOrg(orgId: string, orgName: string) {
     if (!confirm(`Delete "${orgName}"? This cannot be undone.`)) return
     setActionLoading(orgId)
-    await supabase.from('organizations').delete().eq('id', orgId)
+    const { error } = await supabase.from('organizations').delete().eq('id', orgId)
+    if (error) flash(`Failed to delete: ${error.message}`, 'error')
+    else flash(`"${orgName}" deleted`, 'success')
     setActionLoading(null)
     fetchOrgs()
   }
@@ -67,7 +80,7 @@ export default function AdminOrgs() {
     e.preventDefault()
     if (!form.name || !form.owner_id) return
     setCreating(true)
-    await supabase.from('organizations').insert({
+    const { error } = await supabase.from('organizations').insert({
       name: form.name,
       type: form.type || null,
       description: form.description || null,
@@ -75,9 +88,14 @@ export default function AdminOrgs() {
       enrollment_mode: form.enrollment_mode,
       is_active: true,
     })
+    if (error) {
+      flash(`Failed to create: ${error.message}`, 'error')
+    } else {
+      flash(`"${form.name}" created`, 'success')
+      setShowCreate(false)
+      setForm({ name: '', type: '', description: '', owner_id: '', enrollment_mode: 'open' })
+    }
     setCreating(false)
-    setShowCreate(false)
-    setForm({ name: '', type: '', description: '', owner_id: '', enrollment_mode: 'open' })
     fetchOrgs()
   }
 
@@ -92,6 +110,13 @@ export default function AdminOrgs() {
           {showCreate ? 'Cancel' : 'Create Organization'}
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">{error}</div>
+      )}
+      {success && (
+        <div className="bg-green-500/10 border border-green-500/30 text-green-400 px-4 py-3 rounded-lg text-sm">{success}</div>
+      )}
 
       {showCreate && (
         <form onSubmit={createOrg} className="bg-nexus-surface border border-nexus-border rounded-xl p-6 space-y-4">
