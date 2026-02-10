@@ -14,6 +14,10 @@ export default async function DashboardHome() {
     .eq('id', user.id)
     .single<Profile>()
 
+  if (profile?.account_type === 'admin') {
+    redirect('/dashboard/admin')
+  }
+
   if (profile?.account_type === 'business') {
     redirect('/dashboard/business')
   }
