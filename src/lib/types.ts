@@ -97,3 +97,12 @@ export interface FileStorageLink {
   mime_type: string | null
   created_at: string
 }
+
+export interface AllowedEmail {
+  id: string
+  email: string
+  full_name: string | null
+  account_type: string
+  added_by: string | null
+  created_at: string
+}

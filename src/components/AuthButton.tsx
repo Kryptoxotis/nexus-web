@@ -19,7 +19,12 @@ export default function AuthButton({ email }: { email?: string }) {
       )}
       <button
         onClick={handleSignOut}
-        className="px-3 py-1.5 text-sm text-nexus-text-secondary hover:text-white border border-nexus-border rounded-xl hover:bg-nexus-surface-light transition-all glow-blue-hover"
+        className="px-3 py-1.5 text-sm text-nexus-text-secondary hover:text-nexus-text-primary rounded-xl transition-all"
+        style={{
+          background: 'linear-gradient(145deg, #1E293B, #111827)',
+          border: '1px solid rgba(42, 54, 84, 0.6)',
+          boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.2)'
+        }}
       >
         Sign Out
       </button>

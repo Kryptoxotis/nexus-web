@@ -35,25 +35,30 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
     : individualLinks
 
   return (
-    <aside className="w-64 bg-nexus-surface border-r border-nexus-border min-h-screen p-4 rounded-r-xl">
+    <aside className="w-64 futuristic-sidebar min-h-screen p-4">
+      {/* Logo */}
       <div className="mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-nexus-orange to-nexus-blue rounded-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center gap-3">
+          <div className="relative w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
+               style={{
+                 background: 'linear-gradient(135deg, #FF6B35, #3B82F6)',
+                 boxShadow: '0 0 15px rgba(255, 107, 53, 0.3), 0 0 30px rgba(59, 130, 246, 0.15)'
+               }}>
+            <svg className="w-5 h-5 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold gradient-text">Nexus</h1>
+          <h1 className="text-xl font-bold gradient-text tracking-wide">Nexus</h1>
         </div>
         {profile && (
-          <div className="mt-3">
+          <div className="mt-4 px-1">
             <p className="text-sm text-nexus-text-secondary truncate">{profile.full_name || profile.email}</p>
-            <span className={`inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
+            <span className={`inline-block mt-1.5 px-2.5 py-0.5 text-xs font-medium rounded-full capitalize ${
               profile.account_type === 'admin'
-                ? 'bg-nexus-orange/20 text-nexus-orange'
+                ? 'badge-orange'
                 : profile.account_type === 'business'
-                ? 'bg-nexus-blue/20 text-nexus-blue'
-                : 'bg-nexus-surface-light text-nexus-text-secondary'
+                ? 'badge-active'
+                : 'bg-nexus-surface-light/50 text-nexus-text-secondary border border-nexus-border'
             }`}>
               {profile.account_type}
             </span>
@@ -61,6 +66,10 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
         )}
       </div>
 
+      {/* Divider */}
+      <div className="h-px mb-4 mx-2" style={{ background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent)' }} />
+
+      {/* Nav */}
       <nav className="space-y-1">
         {links.map((link) => {
           const isActive = link.href === '/dashboard/admin'
@@ -70,13 +79,13 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-nexus-orange/10 text-nexus-orange nav-glow-active'
-                  : 'text-nexus-text-secondary hover:bg-nexus-surface-light hover:text-nexus-text-primary'
+                  ? 'text-nexus-orange nav-glow-active'
+                  : 'text-nexus-text-secondary hover:text-nexus-text-primary hover:bg-white/[0.03]'
               }`}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-5 h-5 ${isActive ? 'drop-shadow-[0_0_6px_rgba(255,107,53,0.5)]' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
               </svg>
               {link.label}

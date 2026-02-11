@@ -77,7 +77,7 @@ export default function SettingsPage() {
       <h1 className="text-2xl font-bold text-nexus-text-primary mb-6">Settings</h1>
 
       {/* Profile Section */}
-      <section className="bg-nexus-surface rounded-2xl card-glow p-6 mb-6">
+      <section className="futuristic-form rounded-2xl p-6 mb-6">
         <h2 className="text-lg font-semibold text-nexus-text-primary mb-4">Profile</h2>
         <div className="space-y-4">
           <div>
@@ -91,12 +91,12 @@ export default function SettingsPage() {
                 type="text"
                 value={fullName}
                 onChange={e => setFullName(e.target.value)}
-                className="flex-1 px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-sm text-nexus-text-primary input-glow focus:outline-none"
+                className="flex-1 px-3 py-2 futuristic-input rounded-xl text-sm text-nexus-text-primary focus:outline-none"
               />
               <button
                 onClick={handleUpdateName}
                 disabled={saving || fullName === profile?.full_name}
-                className="px-4 py-2 bg-nexus-orange text-white rounded-xl hover:bg-nexus-orange-hover transition-all text-sm font-medium disabled:opacity-50 glow-orange-hover"
+                className="px-4 py-2 btn-primary rounded-xl text-sm font-medium disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -106,7 +106,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Account Type Section */}
-      <section className="bg-nexus-surface rounded-2xl card-glow p-6 mb-6">
+      <section className="futuristic-form rounded-2xl p-6 mb-6">
         <h2 className="text-lg font-semibold text-nexus-text-primary mb-4">Account Type</h2>
         <div className="grid grid-cols-2 gap-4">
           <button
@@ -135,12 +135,13 @@ export default function SettingsPage() {
       </section>
 
       {/* Danger Zone */}
-      <section className="bg-nexus-surface rounded-2xl border border-red-900/50 p-6">
+      <section className="futuristic-form rounded-2xl border border-red-900/50 p-6">
         <h2 className="text-lg font-semibold text-red-400 mb-4">Sign Out</h2>
         <p className="text-sm text-nexus-text-secondary mb-4">Sign out from the web dashboard. Your cards will remain on your phone.</p>
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors text-sm font-medium"
+          className="px-4 py-2 text-white rounded-xl transition-colors text-sm font-medium"
+          style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 2px 8px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)' }}
         >
           Sign Out
         </button>

@@ -83,13 +83,13 @@ export default function BusinessPage() {
     return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div></div>
   }
 
-  const inputClass = "w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-sm text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
+  const inputClass = "w-full px-3 py-2 futuristic-input rounded-xl text-sm text-nexus-text-primary placeholder-nexus-text-secondary/50 focus:outline-none"
 
   if (!org) {
     return (
       <div>
         <h1 className="text-2xl font-bold text-nexus-text-primary mb-6">Create Your Organization</h1>
-        <form onSubmit={handleCreateOrg} className="bg-nexus-surface rounded-2xl card-glow p-6 max-w-lg">
+        <form onSubmit={handleCreateOrg} className="futuristic-form rounded-2xl p-6 max-w-lg">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-nexus-text-secondary mb-1">Organization Name *</label>
@@ -113,7 +113,7 @@ export default function BusinessPage() {
               </select>
             </div>
           </div>
-          <button type="submit" className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-xl hover:bg-nexus-orange-hover transition-all text-sm font-medium glow-orange-hover">
+          <button type="submit" className="mt-4 px-4 py-2 btn-primary rounded-xl text-sm font-medium">
             Create Organization
           </button>
         </form>
@@ -125,13 +125,13 @@ export default function BusinessPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-nexus-text-primary">My Organization</h1>
-        <button onClick={() => setEditing(!editing)} className="px-4 py-2 text-sm font-medium text-nexus-text-secondary border border-nexus-border rounded-xl hover:bg-nexus-surface-light transition-all glow-blue-hover">
+        <button onClick={() => setEditing(!editing)} className="px-4 py-2 text-sm font-medium btn-secondary rounded-xl">
           {editing ? 'Cancel' : 'Edit'}
         </button>
       </div>
 
       {editing ? (
-        <form onSubmit={handleUpdateOrg} className="bg-nexus-surface rounded-2xl card-glow p-6 max-w-lg">
+        <form onSubmit={handleUpdateOrg} className="futuristic-form rounded-2xl p-6 max-w-lg">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-nexus-text-secondary mb-1">Organization Name *</label>
@@ -155,12 +155,12 @@ export default function BusinessPage() {
               </select>
             </div>
           </div>
-          <button type="submit" className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-xl hover:bg-nexus-orange-hover transition-all text-sm font-medium glow-orange-hover">
+          <button type="submit" className="mt-4 px-4 py-2 btn-primary rounded-xl text-sm font-medium">
             Save Changes
           </button>
         </form>
       ) : (
-        <div className="bg-nexus-surface rounded-2xl card-glow p-6">
+        <div className="futuristic-form rounded-2xl p-6">
           <div className="flex items-start gap-4">
             <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-blue rounded-xl flex items-center justify-center">
               <span className="text-2xl font-bold text-white">{org.name.charAt(0).toUpperCase()}</span>
@@ -172,7 +172,7 @@ export default function BusinessPage() {
                 {org.type && (
                   <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-surface-light text-nexus-text-secondary">{org.type}</span>
                 )}
-                <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-nexus-blue/20 text-nexus-blue capitalize">{org.enrollment_mode}</span>
+                <span className="inline-block px-3 py-1 text-sm font-medium rounded-full badge-active capitalize">{org.enrollment_mode}</span>
               </div>
               <p className="text-xs text-nexus-text-secondary mt-3">Created: {new Date(org.created_at).toLocaleDateString()}</p>
             </div>

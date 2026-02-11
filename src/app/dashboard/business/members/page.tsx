@@ -64,7 +64,7 @@ export default function MembersPage() {
         <span className="text-sm text-nexus-text-secondary">{passes.length} total</span>
       </div>
 
-      <div className="bg-nexus-surface rounded-2xl card-glow">
+      <div className="futuristic-table relative rounded-2xl">
         <MemberTable passes={passes} />
       </div>
     </div>

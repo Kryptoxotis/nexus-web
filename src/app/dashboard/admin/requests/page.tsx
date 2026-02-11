@@ -102,9 +102,7 @@ export default function AdminRequests() {
       <h1 className="text-2xl font-bold text-nexus-text-primary">Business Requests</h1>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm">
-          {error}
-        </div>
+        <div className="badge-danger px-4 py-3 rounded-xl text-sm">{error}</div>
       )}
 
       <div className="flex gap-2">
@@ -114,16 +112,21 @@ export default function AdminRequests() {
             onClick={() => setFilter(f.value)}
             className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all ${
               filter === f.value
-                ? 'bg-nexus-orange text-white glow-orange-hover'
-                : 'bg-nexus-surface-light text-nexus-text-secondary hover:text-nexus-text-primary'
+                ? 'btn-primary text-white'
+                : 'text-nexus-text-secondary hover:text-nexus-text-primary'
             }`}
+            style={filter !== f.value ? {
+              background: 'linear-gradient(145deg, #1E293B, #111827)',
+              border: '1px solid rgba(42, 54, 84, 0.6)',
+              boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.2)'
+            } : undefined}
           >
             {f.label}
           </button>
         ))}
       </div>
 
-      <div className="bg-nexus-surface card-glow rounded-2xl overflow-hidden">
+      <div className="futuristic-table relative rounded-2xl overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-nexus-text-secondary">Loading...</div>
         ) : requests.length === 0 ? (
@@ -131,7 +134,7 @@ export default function AdminRequests() {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-nexus-border">
+              <tr className="border-b border-nexus-border" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Requester</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Business Name</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Type</th>
@@ -143,7 +146,7 @@ export default function AdminRequests() {
             </thead>
             <tbody>
               {requests.map((req) => (
-                <tr key={req.id} className="border-b border-nexus-border last:border-0">
+                <tr key={req.id} className="border-b border-nexus-border/50 last:border-0 transition-colors hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <p className="text-sm text-nexus-text-primary">{req.profiles?.full_name || 'Unknown'}</p>
                     <p className="text-xs text-nexus-text-secondary">{req.profiles?.email}</p>
@@ -152,12 +155,12 @@ export default function AdminRequests() {
                   <td className="px-4 py-3 text-sm text-nexus-text-secondary">{req.business_type || '-'}</td>
                   <td className="px-4 py-3 text-sm text-nexus-text-secondary max-w-xs truncate">{req.message || '-'}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
+                    <span className={`inline-block px-2.5 py-0.5 text-xs font-medium rounded-full capitalize ${
                       req.status === 'pending'
-                        ? 'bg-yellow-500/20 text-yellow-400'
+                        ? 'badge-warning'
                         : req.status === 'approved'
-                        ? 'bg-nexus-blue/20 text-nexus-blue'
-                        : 'bg-red-500/20 text-red-400'
+                        ? 'badge-active'
+                        : 'badge-danger'
                     }`}>
                       {req.status}
                     </span>
@@ -171,14 +174,20 @@ export default function AdminRequests() {
                         <button
                           onClick={() => handleAction(req.id, req.user_id, 'approved')}
                           disabled={actionLoading === req.id}
-                          className="px-3 py-1 text-xs font-medium bg-nexus-blue hover:bg-nexus-blue-dark text-white rounded-xl transition-colors disabled:opacity-50"
+                          className="px-3 py-1.5 text-xs font-medium text-white rounded-xl transition-all disabled:opacity-50 btn-secondary"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => handleAction(req.id, req.user_id, 'rejected')}
                           disabled={actionLoading === req.id}
-                          className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                          className="px-3 py-1.5 text-xs font-medium rounded-xl transition-all disabled:opacity-50"
+                          style={{
+                            background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                            color: 'white',
+                            boxShadow: '0 2px 8px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                          }}
                         >
                           Reject
                         </button>
@@ -187,7 +196,12 @@ export default function AdminRequests() {
                       <button
                         onClick={() => resetRequest(req.id)}
                         disabled={actionLoading === req.id}
-                        className="px-3 py-1 text-xs font-medium bg-nexus-surface-light hover:bg-nexus-border text-nexus-text-secondary hover:text-nexus-text-primary rounded-xl transition-colors disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs font-medium text-nexus-text-secondary rounded-xl transition-all disabled:opacity-50 hover:text-nexus-text-primary"
+                        style={{
+                          background: 'linear-gradient(145deg, #1E293B, #111827)',
+                          border: '1px solid rgba(42, 54, 84, 0.6)',
+                          boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.2)'
+                        }}
                       >
                         Reset to Pending
                       </button>

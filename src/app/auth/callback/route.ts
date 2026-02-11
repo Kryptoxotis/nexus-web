@@ -10,7 +10,23 @@ export async function GET(request: Request) {
     const supabase = createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      // Check if user has a profile (existing user or just provisioned by allowlist trigger)
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single()
+
+        if (profile) {
+          return NextResponse.redirect(`${origin}${next}`)
+        }
+
+        // No profile = not on the allowlist, sign out and block
+        await supabase.auth.signOut()
+        return NextResponse.redirect(`${origin}/?error=not_allowed`)
+      }
     }
   }
 

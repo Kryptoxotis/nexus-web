@@ -26,11 +26,13 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-nexus-bg">
       <Sidebar profile={profile} />
-      <div className="flex-1">
-        <header className="glass border-b border-nexus-border px-6 py-3 flex items-center justify-end">
+      <div className="flex-1 flex flex-col">
+        <header className="glass border-b border-nexus-border/50 px-6 py-3 flex items-center justify-between">
+          {/* Left: breadcrumb glow line */}
+          <div className="h-px flex-1 mr-6 max-w-xs" style={{ background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.3), transparent)' }} />
           <AuthButton email={user.email} />
         </header>
-        <main className="p-6">
+        <main className="flex-1 p-6">
           {children}
         </main>
       </div>

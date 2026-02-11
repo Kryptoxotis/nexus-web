@@ -11,7 +11,7 @@ export default function MemberTable({ passes }: MemberTableProps) {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-nexus-border">
+          <tr className="border-b border-nexus-border" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
             <th className="text-left py-3 px-4 text-sm font-medium text-nexus-text-secondary">Member</th>
             <th className="text-left py-3 px-4 text-sm font-medium text-nexus-text-secondary">Status</th>
             <th className="text-left py-3 px-4 text-sm font-medium text-nexus-text-secondary">Uses</th>
@@ -21,7 +21,7 @@ export default function MemberTable({ passes }: MemberTableProps) {
         </thead>
         <tbody>
           {passes.map((pass) => (
-            <tr key={pass.id} className="border-b border-nexus-border/50 hover:bg-nexus-surface-light/50">
+            <tr key={pass.id} className="border-b border-nexus-border/50 transition-colors hover:bg-white/[0.02]">
               <td className="py-3 px-4">
                 <div>
                   <p className="text-sm font-medium text-nexus-text-primary">
@@ -32,9 +32,9 @@ export default function MemberTable({ passes }: MemberTableProps) {
               </td>
               <td className="py-3 px-4">
                 <span className={`px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
-                  pass.status === 'active' ? 'bg-nexus-blue/20 text-nexus-blue' :
-                  pass.status === 'expired' ? 'bg-yellow-500/20 text-yellow-400' :
-                  pass.status === 'revoked' ? 'bg-red-500/20 text-red-400' :
+                  pass.status === 'active' ? 'badge-active' :
+                  pass.status === 'expired' ? 'badge-warning' :
+                  pass.status === 'revoked' ? 'badge-danger' :
                   'bg-nexus-surface-light text-nexus-text-secondary'
                 }`}>
                   {pass.status}

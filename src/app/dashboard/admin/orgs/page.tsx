@@ -105,50 +105,50 @@ export default function AdminOrgs() {
         <h1 className="text-2xl font-bold text-nexus-text-primary">Organizations</h1>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="px-4 py-2 text-sm font-medium bg-nexus-orange hover:bg-nexus-orange-hover text-white rounded-xl transition-all glow-orange-hover"
+          className="px-5 py-2.5 text-sm font-medium text-white rounded-xl btn-primary"
         >
           {showCreate ? 'Cancel' : 'Create Organization'}
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm">{error}</div>
+        <div className="badge-danger px-4 py-3 rounded-xl text-sm">{error}</div>
       )}
       {success && (
-        <div className="bg-nexus-blue/10 border border-nexus-blue/30 text-nexus-blue px-4 py-3 rounded-xl text-sm">{success}</div>
+        <div className="badge-active px-4 py-3 rounded-xl text-sm">{success}</div>
       )}
 
       {showCreate && (
-        <form onSubmit={createOrg} className="bg-nexus-surface card-glow rounded-2xl p-6 space-y-4">
+        <form onSubmit={createOrg} className="futuristic-form rounded-2xl p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-nexus-text-secondary mb-1">Name *</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1.5">Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
+                className="w-full px-3 py-2.5 futuristic-input rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary/50 focus:outline-none"
                 placeholder="Organization name"
               />
             </div>
             <div>
-              <label className="block text-sm text-nexus-text-secondary mb-1">Type</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1.5">Type</label>
               <input
                 type="text"
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
+                className="w-full px-3 py-2.5 futuristic-input rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary/50 focus:outline-none"
                 placeholder="e.g. Technology, Food & Beverage"
               />
             </div>
             <div>
-              <label className="block text-sm text-nexus-text-secondary mb-1">Owner *</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1.5">Owner *</label>
               <select
                 value={form.owner_id}
                 onChange={(e) => setForm({ ...form, owner_id: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary input-glow focus:outline-none"
+                className="w-full px-3 py-2.5 futuristic-input rounded-xl text-nexus-text-primary focus:outline-none"
               >
                 <option value="">Select owner...</option>
                 {users.map((u) => (
@@ -159,11 +159,11 @@ export default function AdminOrgs() {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-nexus-text-secondary mb-1">Enrollment Mode</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1.5">Enrollment Mode</label>
               <select
                 value={form.enrollment_mode}
                 onChange={(e) => setForm({ ...form, enrollment_mode: e.target.value as typeof form.enrollment_mode })}
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary input-glow focus:outline-none"
+                className="w-full px-3 py-2.5 futuristic-input rounded-xl text-nexus-text-primary focus:outline-none"
               >
                 <option value="open">Open</option>
                 <option value="pin">PIN</option>
@@ -173,26 +173,26 @@ export default function AdminOrgs() {
             </div>
           </div>
           <div>
-            <label className="block text-sm text-nexus-text-secondary mb-1">Description</label>
+            <label className="block text-sm text-nexus-text-secondary mb-1.5">Description</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={2}
-              className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none resize-none"
+              className="w-full px-3 py-2.5 futuristic-input rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary/50 focus:outline-none resize-none"
               placeholder="Brief description..."
             />
           </div>
           <button
             type="submit"
             disabled={creating || !form.name || !form.owner_id}
-            className="px-4 py-2 text-sm font-medium bg-nexus-blue hover:bg-nexus-blue-dark text-white rounded-xl transition-all disabled:opacity-50 glow-blue-hover"
+            className="px-5 py-2.5 text-sm font-medium text-white rounded-xl disabled:opacity-50 btn-secondary"
           >
             {creating ? 'Creating...' : 'Create'}
           </button>
         </form>
       )}
 
-      <div className="bg-nexus-surface card-glow rounded-2xl overflow-hidden">
+      <div className="futuristic-table relative rounded-2xl overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-nexus-text-secondary">Loading...</div>
         ) : orgs.length === 0 ? (
@@ -200,7 +200,7 @@ export default function AdminOrgs() {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-nexus-border">
+              <tr className="border-b border-nexus-border" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Name</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Owner</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Type</th>
@@ -211,7 +211,7 @@ export default function AdminOrgs() {
             </thead>
             <tbody>
               {orgs.map((org) => (
-                <tr key={org.id} className="border-b border-nexus-border last:border-0">
+                <tr key={org.id} className="border-b border-nexus-border/50 last:border-0 transition-colors hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <p className="text-sm text-nexus-text-primary font-medium">{org.name}</p>
                     {org.description && <p className="text-xs text-nexus-text-secondary mt-0.5">{org.description}</p>}
@@ -222,15 +222,18 @@ export default function AdminOrgs() {
                   </td>
                   <td className="px-4 py-3 text-sm text-nexus-text-secondary">{org.type || '-'}</td>
                   <td className="px-4 py-3">
-                    <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize bg-nexus-surface-light text-nexus-text-secondary">
+                    <span className="inline-block px-2.5 py-0.5 text-xs font-medium rounded-full capitalize"
+                      style={{
+                        background: 'linear-gradient(145deg, #1E293B, #111827)',
+                        border: '1px solid rgba(42, 54, 84, 0.6)',
+                        color: '#94A3B8'
+                      }}>
                       {org.enrollment_mode}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full ${
-                      org.is_active
-                        ? 'bg-nexus-blue/20 text-nexus-blue'
-                        : 'bg-red-500/20 text-red-400'
+                    <span className={`inline-block px-2.5 py-0.5 text-xs font-medium rounded-full ${
+                      org.is_active ? 'badge-active' : 'badge-danger'
                     }`}>
                       {org.is_active ? 'Active' : 'Inactive'}
                     </span>
@@ -240,18 +243,26 @@ export default function AdminOrgs() {
                       <button
                         onClick={() => toggleActive(org.id, org.is_active)}
                         disabled={actionLoading === org.id}
-                        className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors disabled:opacity-50 ${
-                          org.is_active
-                            ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                            : 'bg-nexus-blue hover:bg-nexus-blue-dark text-white'
+                        className={`px-3 py-1.5 text-xs font-medium rounded-xl transition-all disabled:opacity-50 text-white ${
+                          !org.is_active ? 'btn-secondary' : ''
                         }`}
+                        style={org.is_active ? {
+                          background: 'linear-gradient(135deg, #EAB308, #CA8A04)',
+                          border: '1px solid rgba(234, 179, 8, 0.3)',
+                          boxShadow: '0 2px 8px rgba(234, 179, 8, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                        } : undefined}
                       >
                         {org.is_active ? 'Deactivate' : 'Activate'}
                       </button>
                       <button
                         onClick={() => deleteOrg(org.id, org.name)}
                         disabled={actionLoading === org.id}
-                        className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs font-medium rounded-xl transition-all disabled:opacity-50 text-white"
+                        style={{
+                          background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+                          border: '1px solid rgba(239, 68, 68, 0.3)',
+                          boxShadow: '0 2px 8px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                        }}
                       >
                         Delete
                       </button>
