@@ -52,7 +52,7 @@ export default function MembersPage() {
   if (!orgId) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-400">You need to create an organization first.</p>
+        <p className="text-nexus-text-secondary">You need to create an organization first.</p>
       </div>
     )
   }
@@ -60,11 +60,11 @@ export default function MembersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-white">Members</h1>
-        <span className="text-sm text-gray-500">{passes.length} total</span>
+        <h1 className="text-2xl font-bold text-nexus-text-primary">Members</h1>
+        <span className="text-sm text-nexus-text-secondary">{passes.length} total</span>
       </div>
 
-      <div className="bg-nexus-surface rounded-xl border border-nexus-border">
+      <div className="bg-nexus-surface rounded-2xl card-glow">
         <MemberTable passes={passes} />
       </div>
     </div>

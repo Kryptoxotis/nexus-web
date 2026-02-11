@@ -88,24 +88,24 @@ export default function PassesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-white">My Cards</h1>
+        <h1 className="text-2xl font-bold text-nexus-text-primary">My Cards</h1>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="px-4 py-2 bg-nexus-orange text-white rounded-lg hover:bg-nexus-orange-hover transition-colors text-sm font-medium"
+          className="px-4 py-2 bg-nexus-orange text-white rounded-xl hover:bg-nexus-orange-hover transition-all text-sm font-medium glow-orange-hover"
         >
           {showAddForm ? 'Cancel' : 'Add Card'}
         </button>
       </div>
 
       {showAddForm && (
-        <form onSubmit={handleAddCard} className="bg-nexus-surface rounded-xl border border-nexus-border p-5 mb-6">
+        <form onSubmit={handleAddCard} className="bg-nexus-surface rounded-2xl card-glow p-5 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Card Type *</label>
+              <label className="block text-sm font-medium text-nexus-text-secondary mb-1">Card Type *</label>
               <select
                 value={formData.card_type}
                 onChange={e => setFormData({...formData, card_type: e.target.value as PersonalCard['card_type']})}
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-sm text-gray-200 focus:ring-2 focus:ring-nexus-orange focus:border-nexus-orange"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-sm text-nexus-text-primary input-glow focus:outline-none"
               >
                 {CARD_TYPES.map(type => (
                   <option key={type} value={type}>
@@ -115,30 +115,30 @@ export default function PassesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Title *</label>
+              <label className="block text-sm font-medium text-nexus-text-secondary mb-1">Title *</label>
               <input
                 type="text"
                 required
                 value={formData.title}
                 onChange={e => setFormData({...formData, title: e.target.value})}
                 placeholder="e.g., My Website"
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-nexus-orange focus:border-nexus-orange"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-sm text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Content</label>
+              <label className="block text-sm font-medium text-nexus-text-secondary mb-1">Content</label>
               <input
                 type="text"
                 value={formData.content}
                 onChange={e => setFormData({...formData, content: e.target.value})}
                 placeholder="URL, contact info, or any text"
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-nexus-orange focus:border-nexus-orange"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-sm text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
               />
             </div>
           </div>
           <button
             type="submit"
-            className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-lg hover:bg-nexus-orange-hover transition-colors text-sm font-medium"
+            className="mt-4 px-4 py-2 bg-nexus-orange text-white rounded-xl hover:bg-nexus-orange-hover transition-all text-sm font-medium glow-orange-hover"
           >
             Add Card
           </button>
@@ -146,12 +146,12 @@ export default function PassesPage() {
       )}
 
       {cards.length === 0 ? (
-        <div className="text-center py-12 bg-nexus-surface rounded-xl border border-nexus-border">
-          <svg className="w-12 h-12 text-gray-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-12 bg-nexus-surface rounded-2xl card-glow">
+          <svg className="w-12 h-12 text-nexus-text-secondary mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
           </svg>
-          <p className="text-gray-400 mt-3">No cards yet</p>
-          <p className="text-gray-500 text-sm mt-1">Add a card from the Android app or click &quot;Add Card&quot; above</p>
+          <p className="text-nexus-text-secondary mt-3">No cards yet</p>
+          <p className="text-nexus-text-secondary text-sm mt-1">Add a card from the Android app or click &quot;Add Card&quot; above</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

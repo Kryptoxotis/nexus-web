@@ -99,10 +99,10 @@ export default function AdminRequests() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Business Requests</h1>
+      <h1 className="text-2xl font-bold text-nexus-text-primary">Business Requests</h1>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm">
           {error}
         </div>
       )}
@@ -112,10 +112,10 @@ export default function AdminRequests() {
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
-            className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all ${
               filter === f.value
-                ? 'bg-nexus-orange text-white'
-                : 'bg-nexus-surface-light text-gray-400 hover:text-white'
+                ? 'bg-nexus-orange text-white glow-orange-hover'
+                : 'bg-nexus-surface-light text-nexus-text-secondary hover:text-nexus-text-primary'
             }`}
           >
             {f.label}
@@ -123,46 +123,46 @@ export default function AdminRequests() {
         ))}
       </div>
 
-      <div className="bg-nexus-surface border border-nexus-border rounded-xl overflow-hidden">
+      <div className="bg-nexus-surface card-glow rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-400">Loading...</div>
+          <div className="p-8 text-center text-nexus-text-secondary">Loading...</div>
         ) : requests.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">No requests found</div>
+          <div className="p-8 text-center text-nexus-text-secondary">No requests found</div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="border-b border-nexus-border">
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Requester</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Business Name</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Type</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Message</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Status</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Date</th>
-                <th className="text-right px-4 py-3 text-sm font-medium text-gray-400">Actions</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Requester</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Business Name</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Type</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Message</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Status</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Date</th>
+                <th className="text-right px-4 py-3 text-sm font-medium text-nexus-text-secondary">Actions</th>
               </tr>
             </thead>
             <tbody>
               {requests.map((req) => (
                 <tr key={req.id} className="border-b border-nexus-border last:border-0">
                   <td className="px-4 py-3">
-                    <p className="text-sm text-white">{req.profiles?.full_name || 'Unknown'}</p>
-                    <p className="text-xs text-gray-400">{req.profiles?.email}</p>
+                    <p className="text-sm text-nexus-text-primary">{req.profiles?.full_name || 'Unknown'}</p>
+                    <p className="text-xs text-nexus-text-secondary">{req.profiles?.email}</p>
                   </td>
-                  <td className="px-4 py-3 text-sm text-white">{req.business_name}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400">{req.business_type || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400 max-w-xs truncate">{req.message || '-'}</td>
+                  <td className="px-4 py-3 text-sm text-nexus-text-primary">{req.business_name}</td>
+                  <td className="px-4 py-3 text-sm text-nexus-text-secondary">{req.business_type || '-'}</td>
+                  <td className="px-4 py-3 text-sm text-nexus-text-secondary max-w-xs truncate">{req.message || '-'}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
                       req.status === 'pending'
                         ? 'bg-yellow-500/20 text-yellow-400'
                         : req.status === 'approved'
-                        ? 'bg-green-500/20 text-green-400'
+                        ? 'bg-nexus-blue/20 text-nexus-blue'
                         : 'bg-red-500/20 text-red-400'
                     }`}>
                       {req.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400">
+                  <td className="px-4 py-3 text-sm text-nexus-text-secondary">
                     {new Date(req.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -171,14 +171,14 @@ export default function AdminRequests() {
                         <button
                           onClick={() => handleAction(req.id, req.user_id, 'approved')}
                           disabled={actionLoading === req.id}
-                          className="px-3 py-1 text-xs font-medium bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                          className="px-3 py-1 text-xs font-medium bg-nexus-blue hover:bg-nexus-blue-dark text-white rounded-xl transition-colors disabled:opacity-50"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => handleAction(req.id, req.user_id, 'rejected')}
                           disabled={actionLoading === req.id}
-                          className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                          className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-50"
                         >
                           Reject
                         </button>
@@ -187,7 +187,7 @@ export default function AdminRequests() {
                       <button
                         onClick={() => resetRequest(req.id)}
                         disabled={actionLoading === req.id}
-                        className="px-3 py-1 text-xs font-medium bg-nexus-surface-light hover:bg-nexus-border text-gray-400 hover:text-white rounded-lg transition-colors disabled:opacity-50"
+                        className="px-3 py-1 text-xs font-medium bg-nexus-surface-light hover:bg-nexus-border text-nexus-text-secondary hover:text-nexus-text-primary rounded-xl transition-colors disabled:opacity-50"
                       >
                         Reset to Pending
                       </button>

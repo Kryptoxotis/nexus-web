@@ -27,7 +27,7 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen bg-nexus-bg">
       <Sidebar profile={profile} />
       <div className="flex-1">
-        <header className="bg-nexus-surface border-b border-nexus-border px-6 py-3 flex items-center justify-end">
+        <header className="glass border-b border-nexus-border px-6 py-3 flex items-center justify-end">
           <AuthButton email={user.email} />
         </header>
         <main className="p-6">

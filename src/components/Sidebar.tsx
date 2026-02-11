@@ -35,25 +35,25 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
     : individualLinks
 
   return (
-    <aside className="w-64 bg-nexus-surface border-r border-nexus-border min-h-screen p-4">
+    <aside className="w-64 bg-nexus-surface border-r border-nexus-border min-h-screen p-4 rounded-r-xl">
       <div className="mb-8">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-nexus-orange to-nexus-green rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-nexus-orange to-nexus-blue rounded-lg flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-white">Nexus</h1>
+          <h1 className="text-xl font-bold gradient-text">Nexus</h1>
         </div>
         {profile && (
           <div className="mt-3">
-            <p className="text-sm text-gray-400 truncate">{profile.full_name || profile.email}</p>
+            <p className="text-sm text-nexus-text-secondary truncate">{profile.full_name || profile.email}</p>
             <span className={`inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
               profile.account_type === 'admin'
                 ? 'bg-nexus-orange/20 text-nexus-orange'
                 : profile.account_type === 'business'
-                ? 'bg-nexus-green/20 text-nexus-green'
-                : 'bg-nexus-surface-light text-gray-400'
+                ? 'bg-nexus-blue/20 text-nexus-blue'
+                : 'bg-nexus-surface-light text-nexus-text-secondary'
             }`}>
               {profile.account_type}
             </span>
@@ -70,10 +70,10 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-nexus-orange/10 text-nexus-orange'
-                  : 'text-gray-400 hover:bg-nexus-surface-light hover:text-gray-200'
+                  ? 'bg-nexus-orange/10 text-nexus-orange nav-glow-active'
+                  : 'text-nexus-text-secondary hover:bg-nexus-surface-light hover:text-nexus-text-primary'
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

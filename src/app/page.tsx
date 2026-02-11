@@ -1,13 +1,15 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 
-export default function Home() {
+function HomeContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
+  const errorParam = searchParams.get('error')
 
   useEffect(() => {
     const checkUser = async () => {
@@ -47,19 +49,25 @@ export default function Home() {
     <main className="min-h-screen flex flex-col items-center justify-center bg-nexus-bg">
       <div className="max-w-md w-full mx-auto p-8">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-green rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-nexus-orange to-nexus-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white">Nexus</h1>
-          <p className="text-gray-400 mt-2">Your digital identity wallet</p>
+          <h1 className="text-3xl font-bold gradient-text">Nexus</h1>
+          <p className="text-nexus-text-secondary mt-2">Your digital identity wallet</p>
         </div>
 
-        <div className="bg-nexus-surface rounded-xl border border-nexus-border p-6">
+        {errorParam === 'not_allowed' && (
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm mb-4">
+            Your account is not authorized. Contact an administrator to request access.
+          </div>
+        )}
+
+        <div className="bg-nexus-surface rounded-2xl card-glow p-6">
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-nexus-border rounded-lg text-gray-200 bg-nexus-surface-light hover:bg-nexus-border transition-colors font-medium"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-nexus-border rounded-xl text-nexus-text-primary bg-nexus-surface-light hover:bg-nexus-border transition-all font-medium glow-orange-hover"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -71,10 +79,22 @@ export default function Home() {
           </button>
         </div>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-nexus-text-secondary mt-6">
           Manage your Nexus cards from anywhere
         </p>
       </div>
     </main>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-nexus-bg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nexus-orange"></div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   )
 }

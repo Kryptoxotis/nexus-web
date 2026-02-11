@@ -102,53 +102,53 @@ export default function AdminOrgs() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Organizations</h1>
+        <h1 className="text-2xl font-bold text-nexus-text-primary">Organizations</h1>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="px-4 py-2 text-sm font-medium bg-nexus-orange hover:bg-nexus-orange/80 text-white rounded-lg transition-colors"
+          className="px-4 py-2 text-sm font-medium bg-nexus-orange hover:bg-nexus-orange-hover text-white rounded-xl transition-all glow-orange-hover"
         >
           {showCreate ? 'Cancel' : 'Create Organization'}
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">{error}</div>
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm">{error}</div>
       )}
       {success && (
-        <div className="bg-green-500/10 border border-green-500/30 text-green-400 px-4 py-3 rounded-lg text-sm">{success}</div>
+        <div className="bg-nexus-blue/10 border border-nexus-blue/30 text-nexus-blue px-4 py-3 rounded-xl text-sm">{success}</div>
       )}
 
       {showCreate && (
-        <form onSubmit={createOrg} className="bg-nexus-surface border border-nexus-border rounded-xl p-6 space-y-4">
+        <form onSubmit={createOrg} className="bg-nexus-surface card-glow rounded-2xl p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Name *</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1">Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
                 placeholder="Organization name"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Type</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1">Type</label>
               <input
                 type="text"
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none"
                 placeholder="e.g. Technology, Food & Beverage"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Owner *</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1">Owner *</label>
               <select
                 value={form.owner_id}
                 onChange={(e) => setForm({ ...form, owner_id: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white focus:outline-none focus:border-nexus-orange/50"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary input-glow focus:outline-none"
               >
                 <option value="">Select owner...</option>
                 {users.map((u) => (
@@ -159,11 +159,11 @@ export default function AdminOrgs() {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Enrollment Mode</label>
+              <label className="block text-sm text-nexus-text-secondary mb-1">Enrollment Mode</label>
               <select
                 value={form.enrollment_mode}
                 onChange={(e) => setForm({ ...form, enrollment_mode: e.target.value as typeof form.enrollment_mode })}
-                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white focus:outline-none focus:border-nexus-orange/50"
+                className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary input-glow focus:outline-none"
               >
                 <option value="open">Open</option>
                 <option value="pin">PIN</option>
@@ -173,63 +173,63 @@ export default function AdminOrgs() {
             </div>
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Description</label>
+            <label className="block text-sm text-nexus-text-secondary mb-1">Description</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={2}
-              className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-nexus-orange/50 resize-none"
+              className="w-full px-3 py-2 bg-nexus-surface-light border border-nexus-border rounded-xl text-nexus-text-primary placeholder-nexus-text-secondary input-glow focus:outline-none resize-none"
               placeholder="Brief description..."
             />
           </div>
           <button
             type="submit"
             disabled={creating || !form.name || !form.owner_id}
-            className="px-4 py-2 text-sm font-medium bg-nexus-green hover:bg-nexus-green-light text-white rounded-lg transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium bg-nexus-blue hover:bg-nexus-blue-dark text-white rounded-xl transition-all disabled:opacity-50 glow-blue-hover"
           >
             {creating ? 'Creating...' : 'Create'}
           </button>
         </form>
       )}
 
-      <div className="bg-nexus-surface border border-nexus-border rounded-xl overflow-hidden">
+      <div className="bg-nexus-surface card-glow rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-400">Loading...</div>
+          <div className="p-8 text-center text-nexus-text-secondary">Loading...</div>
         ) : orgs.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">No organizations found</div>
+          <div className="p-8 text-center text-nexus-text-secondary">No organizations found</div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="border-b border-nexus-border">
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Name</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Owner</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Type</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Enrollment</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-400">Status</th>
-                <th className="text-right px-4 py-3 text-sm font-medium text-gray-400">Actions</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Name</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Owner</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Type</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Enrollment</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-nexus-text-secondary">Status</th>
+                <th className="text-right px-4 py-3 text-sm font-medium text-nexus-text-secondary">Actions</th>
               </tr>
             </thead>
             <tbody>
               {orgs.map((org) => (
                 <tr key={org.id} className="border-b border-nexus-border last:border-0">
                   <td className="px-4 py-3">
-                    <p className="text-sm text-white font-medium">{org.name}</p>
-                    {org.description && <p className="text-xs text-gray-500 mt-0.5">{org.description}</p>}
+                    <p className="text-sm text-nexus-text-primary font-medium">{org.name}</p>
+                    {org.description && <p className="text-xs text-nexus-text-secondary mt-0.5">{org.description}</p>}
                   </td>
                   <td className="px-4 py-3">
-                    <p className="text-sm text-white">{org.profiles?.full_name || 'Unknown'}</p>
-                    <p className="text-xs text-gray-400">{org.profiles?.email}</p>
+                    <p className="text-sm text-nexus-text-primary">{org.profiles?.full_name || 'Unknown'}</p>
+                    <p className="text-xs text-nexus-text-secondary">{org.profiles?.email}</p>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400">{org.type || '-'}</td>
+                  <td className="px-4 py-3 text-sm text-nexus-text-secondary">{org.type || '-'}</td>
                   <td className="px-4 py-3">
-                    <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize bg-nexus-surface-light text-gray-400">
+                    <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full capitalize bg-nexus-surface-light text-nexus-text-secondary">
                       {org.enrollment_mode}
                     </span>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full ${
                       org.is_active
-                        ? 'bg-green-500/20 text-green-400'
+                        ? 'bg-nexus-blue/20 text-nexus-blue'
                         : 'bg-red-500/20 text-red-400'
                     }`}>
                       {org.is_active ? 'Active' : 'Inactive'}
@@ -240,10 +240,10 @@ export default function AdminOrgs() {
                       <button
                         onClick={() => toggleActive(org.id, org.is_active)}
                         disabled={actionLoading === org.id}
-                        className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors disabled:opacity-50 ${
+                        className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors disabled:opacity-50 ${
                           org.is_active
                             ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
+                            : 'bg-nexus-blue hover:bg-nexus-blue-dark text-white'
                         }`}
                       >
                         {org.is_active ? 'Deactivate' : 'Activate'}
@@ -251,7 +251,7 @@ export default function AdminOrgs() {
                       <button
                         onClick={() => deleteOrg(org.id, org.name)}
                         disabled={actionLoading === org.id}
-                        className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                        className="px-3 py-1 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-50"
                       >
                         Delete
                       </button>

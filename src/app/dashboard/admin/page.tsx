@@ -23,8 +23,8 @@ export default async function AdminDashboard() {
 
   const stats = [
     { label: 'Pending Requests', value: pendingRequests ?? 0, color: 'text-nexus-orange' },
-    { label: 'Total Users', value: totalUsers ?? 0, color: 'text-nexus-green' },
-    { label: 'Total Organizations', value: totalOrgs ?? 0, color: 'text-blue-400' },
+    { label: 'Total Users', value: totalUsers ?? 0, color: 'text-nexus-blue' },
+    { label: 'Total Organizations', value: totalOrgs ?? 0, color: 'text-nexus-blue-light' },
   ]
 
   const quickLinks = [
@@ -35,12 +35,12 @@ export default async function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold text-nexus-text-primary">Admin Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-nexus-surface border border-nexus-border rounded-xl p-6">
-            <p className="text-sm text-gray-400">{stat.label}</p>
+          <div key={stat.label} className="bg-nexus-surface card-glow rounded-2xl p-6">
+            <p className="text-sm text-nexus-text-secondary">{stat.label}</p>
             <p className={`text-3xl font-bold mt-1 ${stat.color}`}>{stat.value}</p>
           </div>
         ))}
@@ -51,10 +51,10 @@ export default async function AdminDashboard() {
           <Link
             key={link.href}
             href={link.href}
-            className="bg-nexus-surface border border-nexus-border rounded-xl p-6 hover:border-nexus-orange/50 transition-colors group"
+            className="bg-nexus-surface card-glow rounded-2xl p-6 hover:border-nexus-orange/50 transition-all group glow-blue-hover"
           >
-            <h3 className="text-white font-semibold group-hover:text-nexus-orange transition-colors">{link.label}</h3>
-            <p className="text-sm text-gray-400 mt-1">{link.description}</p>
+            <h3 className="text-nexus-text-primary font-semibold group-hover:text-nexus-orange transition-colors">{link.label}</h3>
+            <p className="text-sm text-nexus-text-secondary mt-1">{link.description}</p>
           </Link>
         ))}
       </div>
