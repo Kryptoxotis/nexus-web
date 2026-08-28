@@ -1,0 +1,317 @@
+{
+  "communities": {
+    "0": [
+      "src_app_dashboard_admin_orgs_page",
+      "src_app_dashboard_admin_orgs_page_adminorgs",
+      "src_app_dashboard_admin_orgs_page_orgwithowner",
+      "src_app_dashboard_admin_requests_page",
+      "src_app_dashboard_admin_requests_page_adminrequests",
+      "src_app_dashboard_admin_requests_page_requestwithprofile",
+      "src_app_dashboard_admin_requests_page_statusfilter",
+      "src_app_dashboard_business_page",
+      "src_app_dashboard_business_page_businesspage",
+      "src_app_dashboard_businesses_page",
+      "src_app_dashboard_businesses_page_businessdirectorypage",
+      "src_app_dashboard_logs_page",
+      "src_app_dashboard_logs_page_logspage",
+      "src_app_dashboard_settings_page",
+      "src_app_dashboard_settings_page_settingspage",
+      "src_app_page",
+      "src_app_page_home",
+      "src_app_page_homecontent",
+      "src_components_businesscard",
+      "src_components_businesscard_businesscard",
+      "src_components_businesscard_businesscardprops",
+      "src_lib_supabase_client",
+      "src_lib_supabase_client_createclient",
+      "src_lib_types",
+      "src_lib_types_accesslog",
+      "src_lib_types_businessrequest",
+      "src_lib_types_enrollmentpin",
+      "src_lib_types_filestoragelink",
+      "src_lib_types_organization",
+      "src_lib_types_profile"
+    ],
+    "1": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_next",
+      "package_dependencies_qrcode_react",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_supabase_ssr",
+      "package_dependencies_supabase_supabase_js",
+      "package_json_next",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_start",
+      "package_version",
+      "qrcode_react",
+      "react",
+      "react_dom",
+      "supabase_ssr",
+      "supabase_supabase_js"
+    ],
+    "2": [
+      "ref_dom",
+      "ref_dom_iterable",
+      "ref_esnext",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_incremental",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_plugins",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target"
+    ],
+    "3": [
+      "src_app_auth_callback_route",
+      "src_app_auth_callback_route_get",
+      "src_app_dashboard_admin_layout",
+      "src_app_dashboard_admin_layout_adminlayout",
+      "src_app_dashboard_admin_page",
+      "src_app_dashboard_admin_page_admindashboard",
+      "src_app_dashboard_layout",
+      "src_app_dashboard_layout_dashboardlayout",
+      "src_app_dashboard_page",
+      "src_app_dashboard_page_dashboardhome",
+      "src_components_authbutton",
+      "src_components_authbutton_authbutton",
+      "src_components_sidebar",
+      "src_components_sidebar_adminlinks",
+      "src_components_sidebar_businesslinks",
+      "src_components_sidebar_individuallinks",
+      "src_components_sidebar_sidebar",
+      "src_lib_supabase_server",
+      "src_lib_supabase_server_createclient"
+    ],
+    "4": [
+      "autoprefixer",
+      "package_devdependencies",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_postcss",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "postcss",
+      "tailwindcss",
+      "types_node",
+      "types_react",
+      "types_react_dom",
+      "typescript"
+    ],
+    "5": [
+      "src_app_dashboard_passes_page",
+      "src_app_dashboard_passes_page_card_types",
+      "src_app_dashboard_passes_page_passespage",
+      "src_components_passcard",
+      "src_components_passcard_passcard",
+      "src_components_passcard_passcardprops",
+      "src_components_passcard_typeicons",
+      "src_lib_qr",
+      "src_lib_qr_lookslikeurl",
+      "src_lib_qr_resolvecontact",
+      "src_lib_qr_resolveqrcontent",
+      "src_lib_qr_resolveurl",
+      "src_lib_types_personalcard"
+    ],
+    "6": [
+      "ref_next_env_d_ts",
+      "ref_next_types_ts",
+      "ref_node_modules",
+      "ref_ts",
+      "ref_tsx",
+      "tsconfig",
+      "tsconfig_exclude",
+      "tsconfig_include"
+    ],
+    "7": [
+      "src_app_dashboard_admin_users_page",
+      "src_app_dashboard_admin_users_page_adminusers",
+      "src_app_dashboard_admin_users_page_userrow",
+      "src_lib_admin",
+      "src_lib_admin_admin_user_id",
+      "src_lib_types_allowedemail"
+    ],
+    "8": [
+      "src_app_dashboard_business_members_page",
+      "src_app_dashboard_business_members_page_memberspage",
+      "src_components_membertable",
+      "src_components_membertable_membertable",
+      "src_components_membertable_membertableprops",
+      "src_lib_types_businesspass"
+    ],
+    "9": [
+      "src_lib_supabase_middleware",
+      "src_lib_supabase_middleware_updatesession",
+      "src_middleware",
+      "src_middleware_config",
+      "src_middleware_middleware"
+    ],
+    "10": [
+      "src_app_layout",
+      "src_app_layout_inter",
+      "src_app_layout_metadata",
+      "src_app_layout_rootlayout"
+    ],
+    "11": [
+      "next_config",
+      "next_config_nextconfig"
+    ],
+    "12": [
+      "tailwind_config",
+      "tailwind_config_config"
+    ],
+    "13": [
+      "next_next"
+    ],
+    "14": [
+      "postcss_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.13793103448275862,
+    "1": 0.09090909090909091,
+    "2": 0.10526315789473684,
+    "3": 0.17543859649122806,
+    "4": 0.13333333333333333,
+    "5": 0.2948717948717949,
+    "6": 0.25,
+    "7": 0.4,
+    "8": 0.5333333333333333,
+    "9": 0.6,
+    "10": 0.5,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_lib_supabase_client_createclient",
+      "label": "createClient()",
+      "degree": 23
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 16
+    },
+    {
+      "id": "src_lib_supabase_server_createclient",
+      "label": "createClient()",
+      "degree": 11
+    },
+    {
+      "id": "src_lib_types_profile",
+      "label": "Profile",
+      "degree": 8
+    },
+    {
+      "id": "src_lib_qr_resolveqrcontent",
+      "label": "resolveQrContent()",
+      "degree": 6
+    },
+    {
+      "id": "src_lib_types_organization",
+      "label": "Organization",
+      "degree": 6
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 5
+    },
+    {
+      "id": "src_lib_types_personalcard",
+      "label": "PersonalCard",
+      "degree": 5
+    },
+    {
+      "id": "tsconfig_include",
+      "label": "include",
+      "degree": 5
+    },
+    {
+      "id": "src_lib_qr_resolvecontact",
+      "label": "resolveContact()",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "AdminUsers()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/dashboard/admin/users/page.tsx",
+        "src/lib/supabase/client.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities; peripheral node `AdminUsers()` unexpectedly reaches hub `createClient()`"
+    },
+    {
+      "source": "MembersPage()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/dashboard/business/members/page.tsx",
+        "src/lib/supabase/client.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities; peripheral node `MembersPage()` unexpectedly reaches hub `createClient()`"
+    },
+    {
+      "source": "PassesPage()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/dashboard/passes/page.tsx",
+        "src/lib/supabase/client.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities; peripheral node `PassesPage()` unexpectedly reaches hub `createClient()`"
+    },
+    {
+      "source": "GET()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/auth/callback/route.ts",
+        "src/lib/supabase/server.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `GET()` unexpectedly reaches hub `createClient()`"
+    },
+    {
+      "source": "AdminLayout()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/dashboard/admin/layout.tsx",
+        "src/lib/supabase/server.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `AdminLayout()` unexpectedly reaches hub `createClient()`"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
